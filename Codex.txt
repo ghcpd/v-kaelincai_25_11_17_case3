@@ -1,0 +1,13 @@
+Key Updates
+
+Built a dense but functional baseline panel with shared status/action stack, manual refresh, and weak-network simulation hooks (Project_A_BaselineLivePanel/index.html (line 16), Project_A_BaselineLivePanel/script.js (line 1)), plus matching Playwright harness + npm tooling to surface its current UX gaps (Project_A_BaselineLivePanel/tests/run_scenarios.js (line 57)).
+Delivered a modernized, Tailwind-powered panel featuring a clear status grid, segmented tablist, optimistic wall updates, retry controls, and keyboard-aware tab panels (Project_B_ImprovedLivePanel/index.html (line 26), Project_B_ImprovedLivePanel/script.js (line 145)), wired to the same scenario runner for direct before/after comparisons.
+Authored six structured UX scenarios covering normal, weak-network, maintenance, crowded, empty, and accessibility journeys (test_scenarios.json (line 3)) along with workspace-wide orchestration (run_all.sh (line 1)) and comparison tooling that aggregates metrics into compare_report.md/results_* (scripts/compare.js (line 1), compare_report.md (line 1)).
+Documented full setup/run/test guidance plus common pitfalls and limitations for both stacks (README.md (line 1)); seeded placeholder logs/results so automation folders exist until tests are executed.
+Testing
+
+Not run locally: the provided environment lacks npm/node, so Playwright dependencies could not be installed. Once Node/npm are available, run bash run_all.sh (or per-project bash run_tests.sh) to execute the suites; logs/results will overwrite the placeholders and regenerate compare_report.md.
+Next Steps
+
+Install Node.js/npm + Python3, then execute bash run_all.sh to install browsers, start each server, run the Playwright matrix, and refresh /results + compare_report.md.
+Review the regenerated report/logs to confirm baseline failures (e.g., absent reservation tab) and the improved panel’s successful coverage before packaging or further tuning.

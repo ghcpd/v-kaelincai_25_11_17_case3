@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Improved Live Interaction Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 font-display">
+  <main class="max-w-6xl mx-auto px-4 md:px-8 py-8 flex flex-col gap-6">
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4" data-testid="header">
+      <div>
+        <p class="text-sm uppercase tracking-[0.3em] text-lime-300">Live Interaction Panel</p>
+        <h1 class="text-3xl font-semibold">City Public Art – Live Stations</h1>
+      </div>
+      <div class="flex gap-3 items-center">
+        <button data-testid="manual-refresh" class="refresh-button">Refresh Status</button>
+        <span id="lastUpdated" class="text-sm text-slate-400">Updated just now</span>
+      </div>
+    </header>
+
+    <section class="status-shell" data-testid="status-area" aria-live="polite">
+      <div>
+        <p class="text-sm text-slate-400">Installation State</p>
+        <p id="stateValue" class="text-2xl font-semibold">NORMAL</p>
+        <p id="statusMessage" class="text-sm text-slate-300"></p>
+      </div>
+      <div>
+        <p class="text-sm text-slate-400">Crowd Level</p>
+        <p id="crowdValue" class="text-2xl font-semibold">Comfortable</p>
+        <div class="w-full bg-slate-800 rounded-full h-2 mt-2">
+          <div id="crowdMeter" class="bg-lime-300 h-2 rounded-full" style="width:30%"></div>
+        </div>
+      </div>
+      <div>
+        <p class="text-sm text-slate-400">Queue Length</p>
+        <p class="text-2xl font-semibold" id="queueValue">0 visitors</p>
+        <p id="queueTone" class="text-sm text-slate-300"></p>
+      </div>
+    </section>
+
+    <section class="grid md:grid-cols-2 gap-4" data-testid="overview">
+      <div class="card" data-testid="live-health">
+        <p class="text-slate-400 text-sm">Sensor Health</p>
+        <p id="healthState" class="text-xl font-semibold">Nominal</p>
+        <p class="text-xs text-slate-400">Manual refresh keeps weak networks stable.</p>
+      </div>
+      <div class="card" data-testid="action-summary">
+        <p class="text-slate-400 text-sm">Recommended Flow</p>
+        <ol class="list-decimal list-inside space-y-1 text-slate-200 text-sm">
+          <li>Select a program</li>
+          <li>Choose an interaction (vote or live wall)</li>
+          <li>Reserve queue slot if needed</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="action-shell" data-testid="action-hub">
+      <div role="tablist" aria-label="Interaction modes" class="tablist" id="interactionTabs">
+        <button class="tab" role="tab" aria-controls="programPanel" data-testid="tab-programs" aria-selected="true">Program Interaction</button>
+        <button class="tab" role="tab" aria-controls="liveWallPanel" data-testid="tab-wall" aria-selected="false">Live Wall</button>
+        <button class="tab" role="tab" aria-controls="queuePanel" data-testid="tab-queue" aria-selected="false">Reservation Queue</button>
+      </div>
+      <div class="tab-panels">
+        <div id="programPanel" role="tabpanel" tabindex="0" class="panel active" data-testid="program-panel">
+          <div class="flex flex-col gap-4">
+            <div id="programList" class="grid gap-3" aria-live="polite"></div>
+            <div class="grid gap-2">
+              <label for="programSelect" class="font-semibold">Choose a program</label>
+              <select id="programSelect" class="input" data-testid="program-select"></select>
+            </div>
+            <button id="voteBtn" class="primary" data-testid="vote-button">Vote on Light Theme</button>
+            <p id="voteResult" role="status" class="h-5 text-lime-300 text-sm"></p>
+          </div>
+        </div>
+        <div id="liveWallPanel" role="tabpanel" tabindex="0" class="panel" data-testid="live-wall-panel">
+          <div class="flex flex-col gap-4">
+            <ul id="messageList" class="space-y-3" aria-live="polite"></ul>
+            <label class="font-semibold" for="wallInput">Send a short shout</label>
+            <textarea id="wallInput" rows="3" class="input" data-testid="wall-input" placeholder="Share a message to the live wall"></textarea>
+            <div class="flex gap-3 flex-wrap">
+              <button id="wallBtn" class="secondary" data-testid="wall-send">Send Message</button>
+              <button id="wallRetry" class="ghost hidden" data-testid="retry-action">Retry</button>
+            </div>
+            <p id="wallResult" role="status" class="h-5 text-sm"></p>
+          </div>
+        </div>
+        <div id="queuePanel" role="tabpanel" tabindex="0" class="panel" data-testid="queue-panel">
+          <div class="flex flex-col gap-4">
+            <p id="queueDescription" class="text-sm text-slate-200"></p>
+            <form id="queueForm" class="grid gap-3">
+              <label class="font-semibold" for="nameInput">Display Name</label>
+              <input id="nameInput" class="input" type="text" data-testid="queue-name" placeholder="Visitor" />
+              <label class="font-semibold" for="slotInput">Preferred Slot</label>
+              <input id="slotInput" class="input" type="time" data-testid="queue-slot" />
+              <button type="submit" class="secondary" data-testid="queue-submit">Reserve Spot</button>
+              <p id="queueResult" role="status" class="h-5 text-sm"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
