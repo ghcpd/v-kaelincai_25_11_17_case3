@@ -1,0 +1,245 @@
+﻿{
+  "scenarios": [
+    {
+      "id": "normal-flow",
+      "label": "Standard program interaction",
+      "classification": "normal",
+      "initialState": {
+        "installationName": "Pulse Light Plaza",
+        "installationState": "NORMAL",
+        "crowdStatus": "Calm",
+        "queueLength": 4,
+        "nextProgram": "Aurora Vote @ 18:30",
+        "networkCondition": "Strong 5G (80ms)",
+        "programs": [
+          { "name": "Aurora Vote", "time": "18:30", "themes": ["City Bloom", "Neon Tides", "Urban Pulse"] },
+          { "name": "Ambient Stories", "time": "19:15", "themes": ["Silent Waves", "Radiant Glimmer"] }
+        ],
+        "messages": [
+          "Lena: Picked City Bloom!",
+          "Marcus: Lights are soothing tonight.",
+          "Visitor: Can't wait for the vote to close!"
+        ]
+      },
+      "networkBehavior": {
+        "vote": { "latency": 600, "outcome": "success", "result": "vote recorded" },
+        "message": { "latency": 500, "outcome": "success", "result": "message posted" }
+      },
+      "steps": [
+        "Load scenario",
+        "Vote on the first theme",
+        "Post a friendly message to the live wall"
+      ],
+      "expected": [
+        "Status shows NORMAL and queue of 4",
+        "Program list shows Aurora Vote and Ambient Stories",
+        "Live wall appends user's message"
+      ]
+    },
+    {
+      "id": "tab-navigation",
+      "label": "Tabbed navigation glance",
+      "classification": "normal",
+      "initialState": {
+        "installationName": "Harbor Pulse Stand",
+        "installationState": "NORMAL",
+        "crowdStatus": "Moderate",
+        "queueLength": 12,
+        "nextProgram": "Live Wall Story @ 19:00",
+        "networkCondition": "Stable LTE (120ms)",
+        "programs": [
+          { "name": "Live Wall Story", "time": "19:00", "themes": ["Glow Story", "Night Texture"] },
+          { "name": "Queue Release", "time": "19:45", "themes": ["Ripple", "Pulse"] }
+        ],
+        "messages": [
+          "Noor: Loving the new wall display.",
+          "Carmen: Queue releasing soon!"
+        ]
+      },
+      "networkBehavior": {
+        "vote": { "latency": 450, "outcome": "success", "result": "vote queued" },
+        "message": { "latency": 450, "outcome": "success", "result": "message queued" }
+      },
+      "steps": [
+        "Switch between sections",
+        "Peek at live wall and reservation queue",
+        "Return to program interaction"
+      ],
+      "expected": [
+        "Each tab highlights after click",
+        "Program flows remain visible",
+        "Queue panel shows 12 people"
+      ]
+    },
+    {
+      "id": "weak-network",
+      "label": "Weak network retry",
+      "classification": "error-handling",
+      "initialState": {
+        "installationName": "Eclipse Atrium",
+        "installationState": "NORMAL",
+        "crowdStatus": "Busy",
+        "queueLength": 9,
+        "nextProgram": "Message Burst @ 20:00",
+        "networkCondition": "3G fallback (400ms)",
+        "programs": [
+          { "name": "Message Burst", "time": "20:00", "themes": ["Echo Pulse", "Glacier Drift"] }
+        ],
+        "messages": [
+          "Sky: Delay felt but still here.",
+          "Aria: Tried to vote twice."
+        ]
+      },
+      "networkBehavior": {
+        "vote": { "latency": 1500, "outcome": "success", "result": "vote accepted" },
+        "message": { "latency": 1800, "outcome": "failure", "message": "Message timed out, retry" }
+      },
+      "steps": [
+        "Vote with stale network",
+        "Try sending message, observe failure",
+        "Retry message for success"
+      ],
+      "expected": [
+        "Vote eventually resolves despite latency",
+        "Live wall shows retry message",
+        "Retry button or guidance appears"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "label": "Maintenance mode",
+      "classification": "error-handling",
+      "initialState": {
+        "installationName": "Riverside Prism",
+        "installationState": "MAINTENANCE",
+        "crowdStatus": "Closed",
+        "queueLength": 0,
+        "nextProgram": "Maintenance until 21:30",
+        "networkCondition": "Offline",
+        "programs": [],
+        "messages": [
+          "System: Installation under maintenance.",
+          "Notice: Actions are disabled until further notice."
+        ],
+        "actionHint": "The installation is in maintenance. Please check back later."
+      },
+      "networkBehavior": {
+        "vote": { "latency": 1000, "outcome": "failure", "message": "Actions disabled during maintenance" },
+        "message": { "latency": 1000, "outcome": "failure", "message": "Cannot post while maintenance is active" }
+      },
+      "steps": [
+        "Load maintenance state",
+        "Attempt to vote or send message",
+        "Observe guidance that actions are disabled"
+      ],
+      "expected": [
+        "Both controls are disabled",
+        "Status indicates MAINTENANCE",
+        "Feedback explains why actions are unavailable"
+      ]
+    },
+    {
+      "id": "crowded-state",
+      "label": "Crowded installation",
+      "classification": "edge",
+      "initialState": {
+        "installationName": "North Beacon",
+        "installationState": "CROWDED",
+        "crowdStatus": "Surging",
+        "queueLength": 42,
+        "nextProgram": "Queue Release @ 18:50",
+        "networkCondition": "LTE (220ms)",
+        "programs": [
+          { "name": "Queue Release", "time": "18:50", "themes": ["Braggadocio", "Ripple"] }
+        ],
+        "messages": [
+          "Noah: Queue is long but moving.",
+          "Elaine: Don%27t forget to hydrate!"
+        ],
+        "actionHint": "Crowded crowd, but voting is open as long as your reservation is active."
+      },
+      "networkBehavior": {
+        "vote": { "latency": 900, "outcome": "success", "result": "queue updated" },
+        "message": { "latency": 700, "outcome": "success", "result": "message posted" }
+      },
+      "steps": [
+        "Scan crowd metrics",
+        "Understand that queue is busy",
+        "Vote despite long queue"
+      ],
+      "expected": [
+        "Queue badge shows 42",
+        "Status uses CROWDED coloring",
+        "Action hint reminds crowd to be patient"
+      ]
+    },
+    {
+      "id": "empty-state",
+      "label": "Empty program list",
+      "classification": "edge",
+      "initialState": {
+        "installationName": "Lumen Terrace",
+        "installationState": "NORMAL",
+        "crowdStatus": "Light",
+        "queueLength": 0,
+        "nextProgram": "No programs in next two hours",
+        "networkCondition": "Strong Wi-Fi",
+        "programs": [],
+        "messages": [
+          "System: Explore other installations if nothing is available.",
+          "Guide: Try the Outer Park light show across the river."
+        ],
+        "actionHint": "No programs now — consider exploring other installations."
+      },
+      "networkBehavior": {
+        "vote": { "latency": 500, "outcome": "failure", "message": "No active programs to vote for" },
+        "message": { "latency": 500, "outcome": "success", "result": "message posted" }
+      },
+      "steps": [
+        "Load empty-state",
+        "Notice empty program list",
+        "Post message with CTA to explore"
+      ],
+      "expected": [
+        "Program list shows empty state",
+        "Actions mention next steps",
+        "Live wall still accepts messages"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility-first flow",
+      "classification": "accessibility",
+      "initialState": {
+        "installationName": "Signal Dome",
+        "installationState": "NORMAL",
+        "crowdStatus": "Balanced",
+        "queueLength": 5,
+        "nextProgram": "Accessible Loop @ 19:30",
+        "networkCondition": "5G (50ms)",
+        "programs": [
+          { "name": "Accessible Loop", "time": "19:30", "themes": ["High Contrast", "Motion Safe"] }
+        ],
+        "messages": [
+          "Guide: Use keyboard + voice features for feedback.",
+          "Jamie: Love the focused focus for accessibility."
+        ],
+        "actionHint": "All interactions support keyboard navigation and screen reader labels."
+      },
+      "networkBehavior": {
+        "vote": { "latency": 400, "outcome": "success", "result": "accessible vote" },
+        "message": { "latency": 400, "outcome": "success", "result": "accessible message" }
+      },
+      "steps": [
+        "Use tab/enter to select and vote",
+        "Navigate to message input via keyboard",
+        "Share feedback emphasizing accessibility"
+      ],
+      "expected": [
+        "Labels are read by screen readers",
+        "Controls respond to keyboard focus",
+        "Contrast remains high for readability"
+      ]
+    }
+  ]
+}

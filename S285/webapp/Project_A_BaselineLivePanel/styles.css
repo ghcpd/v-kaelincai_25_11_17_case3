@@ -1,0 +1,10 @@
+body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;background:#fff;color:#222}
+main.dense{padding:12px}
+#status{background:#eee;padding:8px;margin-bottom:8px}
+.program{border:1px solid #ccc;padding:8px;margin-bottom:6px}
+.program .title{font-weight:700}
+.program button{padding:6px 10px;}
+#messages{border:1px solid #ddd;padding:8px;height:80px;overflow:auto}
+.send{display:flex;margin-top:6px}
+.send input{flex:1;padding:6px}
+.send button{padding:6px 10px}
