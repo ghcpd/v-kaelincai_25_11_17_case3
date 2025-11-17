@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Baseline Live Interaction Panel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" class="dense">
+    <h1>City Public Art — Live Interaction Panel (Baseline)</h1>
+    <div id="status" class="status">
+      <div>State: <strong id="state">NORMAL</strong></div>
+      <div>Queue: <span id="queue">2</span></div>
+      <div>Health: <span id="health">OK</span></div>
+    </div>
+
+    <section id="programs">
+      <h2>Programs</h2>
+      <div id="program-list">
+        <div class="program">
+          <div class="title">Light Themes</div>
+          <div class="desc">Vote for a theme</div>
+          <button class="vote">Vote</button>
+        </div>
+        <div class="program">
+          <div class="title">Sound Garden</div>
+          <div class="desc">Play a short melody</div>
+          <button class="vote">Interact</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="livewall">
+      <h2>Live Wall</h2>
+      <div id="messages">
+        <div class="msg">Welcome!</div>
+      </div>
+      <div class="send">
+        <input id="msg-input" placeholder="Say something...">
+        <button id="send-btn">Send</button>
+      </div>
+    </section>
+
+    <section id="queue">
+      <h2>Reservation Queue</h2>
+      <div id="queue-list">
+        <div>No reservations</div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
