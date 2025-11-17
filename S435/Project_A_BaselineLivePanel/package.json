@@ -1,0 +1,13 @@
+{
+  "name": "baseline-live-panel",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node ./tests/test_runner.js",
+    "start": "python -m http.server 3000"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0",
+    "axe-core": "^4.6.3"
+  }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Interaction Panel - Improved</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <div id="app" class="max-w-4xl mx-auto p-4">
+    <header class="flex justify-between items-center p-4 bg-sky-700 text-white rounded-md">
+      <div>
+        <h1 class="text-lg font-semibold">City Public Art</h1>
+        <p class="text-sm opacity-80">Live Interaction Panel</p>
+      </div>
+      <button id="network-toggle" class="bg-white text-sky-700 px-3 py-1 rounded focus:outline-none focus:ring-2">Network: Good</button>
+    </header>
+
+    <!-- Status area -->
+    <section id="status-area" class="mt-4 p-4 bg-white rounded-md shadow-sm" aria-label="installation status">
+      <div class="flex items-center justify-between">
+        <div class="flex gap-4 items-center">
+          <div>
+            <div class="text-sm text-slate-500">Installation State</div>
+            <div id="status" class="text-lg font-medium">NORMAL</div>
+          </div>
+          <div>
+            <div class="text-sm text-slate-500">Queue</div>
+            <div id="queue" class="text-lg font-medium">0</div>
+          </div>
+          <div>
+            <div class="text-sm text-slate-500">Health</div>
+            <div id="health" class="text-lg font-medium">OK</div>
+          </div>
+        </div>
+        <div class="text-sm text-slate-500">Last updated: <span id="last-updated">just now</span></div>
+      </div>
+    </section>
+
+    <!-- Content area with tabs -->
+    <section class="mt-4">
+      <div role="tablist" aria-label="Live Panel sections" class="flex gap-2">
+        <button role="tab" aria-selected="true" id="tab-interaction" class="px-3 py-2 rounded bg-white shadow">Program Interaction</button>
+        <button role="tab" aria-selected="false" id="tab-livewall" class="px-3 py-2 rounded bg-white shadow">Live Wall</button>
+        <button role="tab" aria-selected="false" id="tab-reservation" class="px-3 py-2 rounded bg-white shadow">Reservation Queue</button>
+      </div>
+
+      <div class="p-4 bg-white rounded-md shadow mt-3">
+        <div id="interaction-panel" class="space-y-4">
+          <div class="flex flex-col sm:flex-row gap-4 items-start">
+            <div class="flex-1">
+              <label for="program-select" class="block text-sm font-medium text-slate-700">Select Program</label>
+              <select id="program-select" class="mt-1 w-full border rounded px-2 py-1" aria-label="Select program"></select>
+            </div>
+            <div class="sm:w-56">
+              <div class="text-sm text-slate-500">Action</div>
+              <button id="action-button" class="w-full mt-2 bg-sky-600 hover:bg-sky-700 text-white p-2 rounded focus:outline-none focus:ring-2">Vote Theme</button>
+            </div>
+          </div>
+
+          <div id="control-hint" class="text-sm text-slate-500">Select a program and press Vote Theme. You can also reserve a slot from Reservations tab.</div>
+          <div id="interaction-feedback" role="status" aria-live="polite"></div>
+        </div>
+
+        <div id="livewall-panel" class="hidden">
+          <label class="block text-sm font-medium text-slate-700">Live Messages</label>
+          <div class="mt-2 border rounded p-2 h-40 overflow-auto" id="livewall-messages"></div>
+          <div class="mt-2 flex gap-2">
+            <input id="live-message-input" class="flex-1 border rounded px-2 py-1" placeholder="Send a message" aria-label="Send message" />
+            <button id="send-live" class="bg-sky-600 text-white px-3 py-1 rounded">Send</button>
+          </div>
+        </div>
+
+        <div id="reservation-panel" class="hidden">
+          <div class="text-sm text-slate-500">Queue Length: <span id="res-queue"></span></div>
+          <button id="reserve-button" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">Reserve Slot</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-4 text-sm text-slate-500">Improved UI demo — uses accessible components, manual refresh, optimistic UI, and clear separation between status and actions.</footer>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
