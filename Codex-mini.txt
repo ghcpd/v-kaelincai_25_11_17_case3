@@ -1,0 +1,11 @@
+Built two static HTML iterations plus their Playwright-driven suites: the baseline panel keeps the single-scroll, dense layout with scenario controls, status tiles, and simple voting/messaging, while the improved version uses Tailwind, a split status/action layout, accessible tabs, manual refresh/contrast controls, and optimistic/weak-network behaviors (see Project_A_BaselineLivePanel/index.html (line 1) and Project_B_ImprovedLivePanel/index.html (line 1)).
+
+Baseline project: HTML, CSS, and JS render the crowded Live Interaction Panel with scenario loading, status grid, and minimal feedback, while tests/run_tests.js (line 1) drives Playwright + axe checks, logs, and JSON results for each scenario against the static page served via run_tests.sh.
+Improved UI: Tailwind-powered markup introduces separated sections, tabbed Program/Live Wall/Queue interactions, manual refresh, retry handling, and high-contrast toggles; its tests (Project_B_ImprovedLivePanel/tests/run_tests.js (line 1)) validate tabs, responsive/mobile rendering, weak-network retry hints, accessibility scans, and metrics before writing results_post.json.
+Shared automation/docs: run_all.sh (line 1) chains both suites, copies their logs/results into /results, and refreshes compare_report.md (line 1) using the same scenario definitions referenced in test_scenarios.json (line 1); README.md (line 1) explains setup, dev servers, testing, scenario intent, pitfalls, and limitations for whoever runs the experiments.
+Testing – Not run (Node.js isn’t installed in this environment; node --version failed), so the Playwright suites didn’t execute locally. Once Node >=14 is available, run each project’s run_tests.sh (or the root ./run_all.sh) to regenerate results_pre.json/results_post.json, log_pre.txt/log_post.txt, and the compare report.
+
+Next steps:
+
+Install Node.js, then rerun ./run_all.sh to exercise both suites end-to-end, verify HTTP 200, and produce aggregated logs/results plus an updated compare_report.md.
+Review the generated /results outputs and iterate on scenario data or UI behaviors (e.g., tweak test_scenarios.json or the improved panel’s optimistic/ retry flows) before running the scripts again.

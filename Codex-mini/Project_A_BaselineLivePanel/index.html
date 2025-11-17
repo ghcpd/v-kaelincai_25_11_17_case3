@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>City Public Art - Live Panel (Baseline)</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main class="panel">
+    <header class="panel__header">
+      <h1>City Public Art — Live Interaction Panel</h1>
+      <small>Baseline view • Single-scroll layout • Limited guidance</small>
+    </header>
+
+    <section class="scenario-controls" aria-label="Scenario controls">
+      <label for="scenario-selector">Mock States</label>
+      <div class="scenario-controls__group">
+        <select id="scenario-selector" aria-label="Choose scenario"></select>
+        <button id="load-scenario">Load state</button>
+        <button id="refresh-data">Refresh (auto)</button>
+      </div>
+      <p class="scenario-hint">Results show whichever scenario is loaded last.</p>
+    </section>
+
+    <section class="status-area" aria-label="Status summary">
+      <h2>Status</h2>
+      <div id="status-grid" class="status-area__grid"></div>
+    </section>
+
+    <section class="program-area" aria-label="Program listing">
+      <h2>Programs</h2>
+      <ul id="program-list"></ul>
+    </section>
+
+    <section class="interaction-area" aria-label="Interaction controls">
+      <h2>Take action</h2>
+      <div class="interaction-area__row">
+        <label for="theme-select">Theme vote</label>
+        <select id="theme-select"></select>
+        <button id="vote-theme">Vote</button>
+      </div>
+      <div class="interaction-area__row">
+        <label for="message-input">Live wall message</label>
+        <input id="message-input" placeholder="Share a note" />
+        <button id="send-message">Send</button>
+      </div>
+      <div id="interaction-feedback" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="message-area" aria-label="Latest live wall">
+      <h2>Live Wall</h2>
+      <ul id="live-messages"></ul>
+    </section>
+
+    <footer class="panel__footer">
+      <p>Baseline: dense layout, no tabs, minimal feedback.</p>
+    </footer>
+  </main>
+  <script src="assets/main.js"></script>
+</body>
+</html>
