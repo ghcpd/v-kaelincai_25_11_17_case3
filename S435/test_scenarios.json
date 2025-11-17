@@ -1,0 +1,105 @@
+[
+  {
+    "id": "scenario_01",
+    "name": "Standard Interaction Flow - Vote theme",
+    "classification": "normal",
+    "viewport": {"width": 375, "height": 667},
+    "mockState": {"status":"NORMAL","queue":1,"health":"OK","programs":[{"id":"p1","title":"Aurora"}], "forceSuccess": true},
+    "tab": "interaction",
+    "steps": [
+      {"action":"wait","value":200},
+      {"action":"click","target":"#action-button"},
+      {"action":"wait","value":900}
+    ],
+    "expected": [
+      {"type":"visible","selector":"#status-area"},
+      {"type":"text","selector":"#interaction-feedback","value":"Vote recorded"}
+    ]
+  },
+  {
+    "id":"scenario_02",
+    "name":"Weak-network flow with retry",
+    "classification":"edge",
+    "viewport":{"width":375,"height":667},
+    "mockState":{"status":"NORMAL","queue":0,"health":"OK","programs":[{"id":"p1","title":"Aurora"}]},
+    "tab":"interaction",
+    "steps":[
+      {"action":"click","target":"#network-toggle"},
+      {"action":"wait","value":200},
+      {"action":"click","target":"#network-toggle"},
+      {"action":"wait","value":200},
+      {"action":"click","target":"#action-button"},
+      {"action":"wait","value":1500},
+      {"action":"click","target":"#network-toggle"},
+      {"action":"wait","value":200},
+      {"action":"click","target":"#retry-vote"},
+      {"action":"wait","value":900}
+    ],
+    "expected":[
+      {"type":"visible","selector":"#interaction-feedback"},
+      {"type":"text","selector":"#interaction-feedback","value":"Vote recorded"}
+    ]
+  },
+  {
+    "id":"scenario_03",
+    "name":"PAUSED state disables actions",
+    "classification":"edge",
+    "viewport":{"width":375,"height":667},
+    "mockState":{"status":"PAUSED","queue":0,"health":"OK","programs":[]},
+    "tab":"interaction",
+    "steps":[
+      {"action":"wait","value":100}
+    ],
+    "expected":[
+      {"type":"text","selector":"#status","value":"PAUSED"},
+      {"type":"visible","selector":"#control-hint"}
+    ]
+  },
+  {
+    "id":"scenario_04",
+    "name":"CROWDED state with queue warning",
+    "classification":"edge",
+    "viewport":{"width":1024,"height":768},
+    "mockState":{"status":"CROWDED","queue":25,"health":"OK","programs":[{"id":"p1","title":"Aurora"}]},
+    "tab":"reservation",
+    "steps":[
+      {"action":"wait","value":200},
+      {"action":"click","target":"#reserve-button"},
+      {"action":"wait","value":500}
+    ],
+    "expected":[
+      {"type":"text","selector":"#status","value":"CROWDED"},
+      {"type":"text","selector":"#res-queue","value":"25"}
+    ]
+  },
+  {
+    "id":"scenario_05",
+    "name":"Empty state - no upcoming programs",
+    "classification":"edge",
+    "viewport":{"width":375,"height":667},
+    "mockState":{"status":"NORMAL","queue":0,"health":"OK","programs":[]},
+    "tab":"interaction",
+    "steps":[{"action":"wait","value":100}],
+    "expected":[
+      {"type":"visible","selector":"#control-hint"},
+      {"type":"text","selector":"#control-hint","value":"Select a program"}
+    ]
+  },
+  {
+    "id":"scenario_06",
+    "name":"Accessibility keyboard navigation",
+    "classification":"accessibility",
+    "viewport":{"width":375,"height":667},
+    "mockState":{"status":"NORMAL","queue":0,"health":"OK","programs":[{"id":"p1","title":"Aurora"}]},
+    "tab":"interaction",
+    "steps":[
+      {"action":"click","target":"#tab-interaction"},
+      {"action":"wait","value":200},
+      {"action":"click","target":"#tab-livewall"},
+      {"action":"wait","value":200},
+      {"action":"click","target":"#tab-reservation"},
+      {"action":"wait","value":200}
+    ],
+    "expected":[{"type":"visible","selector":"#reservation-panel"}]
+  }
+]

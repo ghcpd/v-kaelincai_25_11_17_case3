@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Interaction Panel - Baseline</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>City Public Art - Live Panel (Baseline)</h1>
+    </header>
+    <main>
+      <section id="status-area">
+        <div class="status-item">Installation: <span id="status">NORMAL</span></div>
+        <div class="status-item">Queue: <span id="queue">0</span></div>
+        <div class="status-item">Health: <span id="health">OK</span></div>
+      </section>
+
+      <section id="controls">
+        <h2>Interaction</h2>
+        <div id="program-list">
+        </div>
+        <div id="interaction-controls">
+          <select id="program-select"></select>
+          <button id="action-button">Vote Theme</button>
+          <button id="refresh">Refresh</button>
+        </div>
+        <div id="messages"></div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Baseline demo - minimal UI</small>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

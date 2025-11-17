@@ -1,0 +1,5 @@
+/* Minimal custom styles, majority handled by tailwind */
+:root{--accent:#0ea5e9}
+body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+#status{color:var(--accent)}
+[data-disabled]{opacity:0.6;pointer-events:none}
