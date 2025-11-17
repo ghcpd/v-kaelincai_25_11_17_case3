@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baseline Live Interaction Panel</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header data-testid="header">
+      <h1>City Public Art · Live Interaction Panel</h1>
+      <button id="refreshBtn" class="pill" data-testid="manual-refresh">Manual Refresh</button>
+    </header>
+
+    <section class="status" aria-live="polite" data-testid="status-area">
+      <div class="status-row">
+        <div>
+          <p class="label">Installation State</p>
+          <p id="stateValue" class="value">NORMAL</p>
+        </div>
+        <div>
+          <p class="label">Crowd</p>
+          <p id="crowdValue" class="value">0</p>
+        </div>
+        <div>
+          <p class="label">Queue Length</p>
+          <p id="queueValue" class="value">0</p>
+        </div>
+      </div>
+      <p id="statusMessage" class="status-message"></p>
+    </section>
+
+    <section class="panel" id="programPanel" data-testid="program-panel">
+      <h2>Program Interaction</h2>
+      <div id="programList" class="stack"></div>
+      <div class="panel-block">
+        <label for="programSelect">Choose a program</label>
+        <select id="programSelect" data-testid="program-select"></select>
+        <button id="voteBtn" class="primary" data-testid="vote-button">Vote on Light Theme</button>
+        <p id="voteResult" class="feedback" role="status"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="liveWallPanel" data-testid="live-wall-panel">
+      <h2>Live Wall</h2>
+      <ul id="messageList" class="message-list"></ul>
+      <div class="panel-block">
+        <label for="wallInput">Send a short shout</label>
+        <textarea id="wallInput" rows="3" data-testid="wall-input"></textarea>
+        <button id="wallBtn" class="secondary" data-testid="wall-send">Send Message</button>
+        <p id="wallResult" class="feedback" role="status"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="queuePanel" data-testid="queue-panel">
+      <h2>Reservation Queue</h2>
+      <p id="queueDescription"></p>
+      <form id="queueForm" class="panel-block">
+        <label for="nameInput">Display Name</label>
+        <input id="nameInput" type="text" data-testid="queue-name" />
+        <label for="slotInput">Requested Slot</label>
+        <input id="slotInput" type="time" data-testid="queue-slot" />
+        <button type="submit" class="secondary" data-testid="queue-submit">Reserve Spot</button>
+        <p id="queueResult" class="feedback" role="status"></p>
+      </form>
+    </section>
+  </main>
+  <script src="script.js" type="module"></script>
+</body>
+</html>

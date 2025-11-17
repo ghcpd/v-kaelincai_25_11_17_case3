@@ -1,0 +1,145 @@
+﻿[
+  {
+    "id": "normal-flow",
+    "title": "Visitor completes a standard vote",
+    "classification": "normal",
+    "description": "Installation is in NORMAL state with healthy network; visitor votes on a light theme and sees confirmation.",
+    "initialData": {
+      "installationState": "NORMAL",
+      "network": "good",
+      "programs": ["Pulse Current", "River Echo"],
+      "messages": ["Welcome!", "Sunset wave just launched"],
+      "queueLength": 4
+    },
+    "userSteps": [
+      "Wait for status to load",
+      "Pick the Program Interaction section",
+      "Select the first available program",
+      "Submit a vote and wait for confirmation"
+    ],
+    "expectedOutcomes": [
+      "Status and action areas are both visible",
+      "Voting controls stay enabled",
+      "Confirmation or toast visible after vote"
+    ],
+    "viewports": ["mobile", "desktop"]
+  },
+  {
+    "id": "weak-network",
+    "title": "Manual refresh and retry on a laggy network",
+    "classification": "edge",
+    "description": "Network latency is high. Visitor performs manual refresh, sees loading indicator, then retries a failed message submission.",
+    "initialData": {
+      "installationState": "NORMAL",
+      "network": "weak",
+      "programs": ["Aurora Sync"],
+      "messages": ["Laggy tonight"],
+      "queueLength": 9
+    },
+    "userSteps": [
+      "Trigger manual refresh",
+      "Observe loading or retry affordances",
+      "Send a wall message which may fail once",
+      "Retry the failed action until success"
+    ],
+    "expectedOutcomes": [
+      "Loading indicator displayed",
+      "Retry button or link available after failure",
+      "Message list updates optimistically once success is reported"
+    ],
+    "viewports": ["desktop"]
+  },
+  {
+    "id": "state-restriction",
+    "title": "Installation paused",
+    "classification": "error-handling",
+    "description": "Installation is PAUSED, so user actions must be disabled with clear explanation.",
+    "initialData": {
+      "installationState": "PAUSED",
+      "network": "good",
+      "programs": ["Morning Bloom"],
+      "messages": [],
+      "queueLength": 14
+    },
+    "userSteps": [
+      "Check state banners",
+      "Attempt to focus interaction controls"
+    ],
+    "expectedOutcomes": [
+      "Primary action buttons disabled",
+      "Helper text explaining maintenance or pause",
+      "Tab labels still operable for information access"
+    ],
+    "viewports": ["desktop"]
+  },
+  {
+    "id": "crowded-state",
+    "title": "Crowded queue warning",
+    "classification": "edge",
+    "description": "Installation is CROWDED; queue warnings are shown but some actions remain.",
+    "initialData": {
+      "installationState": "CROWDED",
+      "network": "good",
+      "programs": ["Skywave"],
+      "messages": ["Queue is 45 mins"],
+      "queueLength": 38
+    },
+    "userSteps": [
+      "Open Reservation Queue tab",
+      "Inspect wait-time alerts",
+      "Submit a reservation request"
+    ],
+    "expectedOutcomes": [
+      "Warning or badge appears",
+      "Queue metrics highlighted",
+      "Reservation submission provides feedback"
+    ],
+    "viewports": ["desktop"]
+  },
+  {
+    "id": "empty-state",
+    "title": "No programs upcoming",
+    "classification": "edge",
+    "description": "No programs available; UI must show empty-state guidance.",
+    "initialData": {
+      "installationState": "NORMAL",
+      "network": "good",
+      "programs": [],
+      "messages": ["New schedule at 21:00"],
+      "queueLength": 2
+    },
+    "userSteps": [
+      "Navigate to Program Interaction",
+      "Observe empty states"
+    ],
+    "expectedOutcomes": [
+      "Empty call-to-action visible",
+      "No interactive buttons enabled"
+    ],
+    "viewports": ["desktop"]
+  },
+  {
+    "id": "accessibility-nav",
+    "title": "Keyboard navigation and contrast",
+    "classification": "accessibility",
+    "description": "User navigates with keyboard only and expects focus outlines and aria labels.",
+    "initialData": {
+      "installationState": "NORMAL",
+      "network": "good",
+      "programs": ["Pulse Current"],
+      "messages": ["Tap to start"],
+      "queueLength": 1
+    },
+    "userSteps": [
+      "Use keyboard to switch tabs",
+      "Navigate to message box via Tab",
+      "Submit a message with Enter key"
+    ],
+    "expectedOutcomes": [
+      "Visible focus rings",
+      "ARIA labels resolvable",
+      "Message appended and announced"
+    ],
+    "viewports": ["mobile"]
+  }
+]

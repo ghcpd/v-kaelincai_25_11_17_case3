@@ -1,0 +1,14 @@
+﻿{
+  "name": "baseline-live-panel",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/run_scenarios.js --mode=pre"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "1.4.3",
+    "axe-core": "4.9.1",
+    "playwright": "1.47.2"
+  }
+}
