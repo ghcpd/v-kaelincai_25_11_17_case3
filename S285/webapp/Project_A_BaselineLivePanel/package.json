@@ -1,0 +1,13 @@
+{
+  "name": "baseline-live-panel",
+  "version": "1.0.0",
+  "description": "Baseline Live Interaction Panel (simple static)",
+  "scripts":{
+    "start":"python -m http.server 3000",
+    "test":"node tests/run_tests.js"
+  },
+  "dependencies":{
+    "puppeteer": "^19.11.1",
+    "axe-core":"^4.6.3"
+  }
+}
