@@ -1,5 +1,0 @@
-/* small helpers to complement Tailwind */
-.btn{background:#2563eb;color:#fff;padding:.5rem .75rem;border-radius:.375rem;border:none}
-.tab{padding:.5rem .75rem;border-radius:.375rem;background:#f8fafc;border:1px solid #e6eef8}
-.tab.active{background:#eef2ff;border-color:#c7d2fe}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
