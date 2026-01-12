@@ -1,0 +1,725 @@
+{
+  "test_scenarios": [
+    {
+      "id": 1,
+      "name": "Normal Flow - Vote on Light Theme",
+      "category": "normal",
+      "description": "User on good network lands on panel, sees available program, selects program, votes on light theme successfully",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "LOW",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN",
+            "options": [
+              { "id": "opt_1", "label": "Blue Aurora", "votes": 45 },
+              { "id": "opt_2", "label": "Green Aurora", "votes": 38 }
+            ]
+          }
+        ],
+        "messages": [],
+        "queue_status": "EMPTY"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "page",
+          "description": "Page loads and displays status area"
+        },
+        {
+          "step": 2,
+          "action": "click",
+          "target": "program_card_prog_001",
+          "description": "Click on available program"
+        },
+        {
+          "step": 3,
+          "action": "click",
+          "target": "vote_button_opt_1",
+          "description": "Click vote button for Blue Aurora"
+        },
+        {
+          "step": 4,
+          "action": "observe",
+          "target": "success_toast",
+          "description": "Confirm success notification appears"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["status_area", "program_section", "vote_options", "success_toast"],
+        "vote_recorded": true,
+        "vote_count_updated": true,
+        "button_enabled": true,
+        "page_stable": true,
+        "accessibility": {
+          "focus_visible": true,
+          "keyboard_navigable": true,
+          "contrast_ratio": "4.5:1"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Weak Network - Message Submission with Retry",
+      "category": "edge",
+      "description": "High latency and 30% request failure; user sends live message, sees loading, encounters transient failure, retries, succeeds",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "MEDIUM",
+        "queue_length": 5,
+        "network_latency": 2500,
+        "network_failure_rate": 0.3,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN"
+          }
+        ],
+        "messages": [
+          { "id": "msg_1", "author": "User_A", "text": "So cool!", "timestamp": "2025-11-17T15:30:00Z" }
+        ],
+        "queue_status": "QUEUED"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "live_wall_section",
+          "description": "Navigate to Live Wall (Danmaku) section"
+        },
+        {
+          "step": 2,
+          "action": "click",
+          "target": "message_input",
+          "description": "Click on message input field"
+        },
+        {
+          "step": 3,
+          "action": "type",
+          "target": "message_input",
+          "text": "This is amazing!",
+          "description": "Type a message"
+        },
+        {
+          "step": 4,
+          "action": "click",
+          "target": "send_button",
+          "description": "Click send button"
+        },
+        {
+          "step": 5,
+          "action": "observe",
+          "target": "loading_indicator",
+          "description": "Observe loading spinner appears"
+        },
+        {
+          "step": 6,
+          "action": "wait",
+          "duration_ms": 3000,
+          "description": "Wait for timeout / failure"
+        },
+        {
+          "step": 7,
+          "action": "observe",
+          "target": "retry_button",
+          "description": "Error message with retry button appears"
+        },
+        {
+          "step": 8,
+          "action": "click",
+          "target": "retry_button",
+          "description": "Click retry button"
+        },
+        {
+          "step": 9,
+          "action": "observe",
+          "target": "loading_indicator",
+          "description": "Loading spinner reappears briefly"
+        },
+        {
+          "step": 10,
+          "action": "observe",
+          "target": "success_toast",
+          "description": "Message sent successfully"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["live_wall_section", "message_input", "loading_indicator", "retry_button", "success_toast"],
+        "loading_shown": true,
+        "retry_available": true,
+        "message_eventually_sent": true,
+        "user_can_interact_during_loading": false,
+        "send_button_disabled_during_request": true,
+        "input_cleared_on_success": true,
+        "accessibility": {
+          "aria_busy_attribute": true,
+          "error_announced": true
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "State Restrictions - Installation in PAUSED State",
+      "category": "edge",
+      "description": "Installation is PAUSED; all interaction buttons disabled with clear explanation; user cannot vote, message, or reserve",
+      "mock_state": {
+        "installation_state": "PAUSED",
+        "crowdedness": "MEDIUM",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "CLOSED"
+          }
+        ],
+        "messages": [],
+        "queue_status": "CLOSED",
+        "pause_reason": "System maintenance in progress. We'll be back online soon!"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "page",
+          "description": "Page loads showing PAUSED state"
+        },
+        {
+          "step": 2,
+          "action": "observe",
+          "target": "status_message",
+          "description": "System status shows pause reason message"
+        },
+        {
+          "step": 3,
+          "action": "observe",
+          "target": "program_section",
+          "description": "Program cards visible but marked as unavailable"
+        },
+        {
+          "step": 4,
+          "action": "try_click",
+          "target": "vote_button",
+          "description": "Attempt to click vote button (should be disabled)"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["status_area", "pause_message", "program_section", "disabled_buttons"],
+        "vote_button_disabled": true,
+        "message_input_disabled": true,
+        "reserve_button_disabled": true,
+        "pause_reason_visible": true,
+        "visual_distinction": "buttons appear grayed out, status area highlighted",
+        "accessibility": {
+          "disabled_buttons_announced": true,
+          "aria_disabled_attribute": true,
+          "reason_text_accessible": true
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Crowded Installation State - Queue Warning",
+      "category": "edge",
+      "description": "Installation CROWDED with 50+ in queue; UI surfaces warning about wait times but interactions still allowed with queue info",
+      "mock_state": {
+        "installation_state": "CROWDED",
+        "crowdedness": "HIGH",
+        "queue_length": 52,
+        "network_latency": 150,
+        "network_failure_rate": 0.1,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN",
+            "estimated_wait_minutes": 15
+          }
+        ],
+        "messages": [
+          { "id": "msg_1", "author": "User_B", "text": "Long wait!", "timestamp": "2025-11-17T15:35:00Z" }
+        ],
+        "queue_status": "LONG_QUEUE"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "status_area",
+          "description": "Status area shows crowdedness warning"
+        },
+        {
+          "step": 2,
+          "action": "observe",
+          "target": "queue_info_widget",
+          "description": "Queue length and wait time prominently displayed"
+        },
+        {
+          "step": 3,
+          "action": "click",
+          "target": "program_card_prog_001",
+          "description": "Click on program (allowed despite crowding)"
+        },
+        {
+          "step": 4,
+          "action": "observe",
+          "target": "queue_warning",
+          "description": "Warning about wait time shown near vote button"
+        },
+        {
+          "step": 5,
+          "action": "click",
+          "target": "reserve_slot_button",
+          "description": "Click reserve button"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["status_area", "crowdedness_warning", "queue_info_widget", "program_section", "reserve_button"],
+        "crowdedness_visually_distinguished": true,
+        "queue_length_visible": true,
+        "estimated_wait_visible": true,
+        "buttons_enabled": true,
+        "reserve_shows_queue_position": true,
+        "accessibility": {
+          "warning_announced": true,
+          "queue_info_readable": true
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Empty State - No Programs Available",
+      "category": "edge",
+      "description": "No programs available in next 2 hours; panel displays meaningful empty state with call-to-action to explore other installations",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "UNKNOWN",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [],
+        "messages": [],
+        "queue_status": "EMPTY",
+        "next_program_in_hours": 3.5
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "page",
+          "description": "Page loads with no programs"
+        },
+        {
+          "step": 2,
+          "action": "observe",
+          "target": "empty_state_section",
+          "description": "Empty state card is visible"
+        },
+        {
+          "step": 3,
+          "action": "observe",
+          "target": "empty_message",
+          "description": "Message indicates no programs now, shows next program time"
+        },
+        {
+          "step": 4,
+          "action": "observe",
+          "target": "cta_button",
+          "description": "Call-to-action button to explore other installations is visible"
+        },
+        {
+          "step": 5,
+          "action": "click",
+          "target": "cta_button",
+          "description": "Click to explore other installations"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["empty_state_section", "empty_message", "next_program_info", "cta_button"],
+        "program_section_hidden": true,
+        "empty_message_clear": true,
+        "next_program_time_shown": true,
+        "cta_navigates_correctly": true,
+        "accessibility": {
+          "empty_state_announced": true,
+          "cta_button_accessible": true
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Tabbed Navigation - Switching Between Sections",
+      "category": "normal",
+      "description": "User navigates between Program Interaction, Live Wall (Danmaku), and Reservation Queue tabs; each tab maintains visual state and shows correct content",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "MEDIUM",
+        "queue_length": 8,
+        "network_latency": 100,
+        "network_failure_rate": 0,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN",
+            "options": [
+              { "id": "opt_1", "label": "Blue Aurora", "votes": 45 },
+              { "id": "opt_2", "label": "Green Aurora", "votes": 38 }
+            ]
+          }
+        ],
+        "messages": [
+          { "id": "msg_1", "author": "User_A", "text": "Amazing colors!", "timestamp": "2025-11-17T15:30:00Z" },
+          { "id": "msg_2", "author": "User_C", "text": "Vote for blue!", "timestamp": "2025-11-17T15:31:00Z" }
+        ],
+        "queue_status": "QUEUED",
+        "queue_entries": [
+          { "position": 1, "user_id": "user_001", "reserved_duration_minutes": 5 },
+          { "position": 2, "user_id": "user_002", "reserved_duration_minutes": 5 },
+          { "position": 3, "user_id": "current_user", "reserved_duration_minutes": 5 }
+        ]
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "tab_navigation",
+          "description": "Three tabs visible: Program Interaction, Live Wall, Reservation Queue"
+        },
+        {
+          "step": 2,
+          "action": "click",
+          "target": "tab_program_interaction",
+          "description": "Click Program Interaction tab (default)"
+        },
+        {
+          "step": 3,
+          "action": "observe",
+          "target": "program_section",
+          "description": "Program voting interface displays"
+        },
+        {
+          "step": 4,
+          "action": "click",
+          "target": "tab_live_wall",
+          "description": "Click Live Wall (Danmaku) tab"
+        },
+        {
+          "step": 5,
+          "action": "observe",
+          "target": "message_feed",
+          "description": "Message feed with existing messages displays"
+        },
+        {
+          "step": 6,
+          "action": "observe",
+          "target": "message_input",
+          "description": "Message input field visible"
+        },
+        {
+          "step": 7,
+          "action": "click",
+          "target": "tab_reservation_queue",
+          "description": "Click Reservation Queue tab"
+        },
+        {
+          "step": 8,
+          "action": "observe",
+          "target": "queue_list",
+          "description": "Queue list displays with positions and user info"
+        },
+        {
+          "step": 9,
+          "action": "click",
+          "target": "tab_program_interaction",
+          "description": "Click back to Program Interaction tab"
+        },
+        {
+          "step": 10,
+          "action": "observe",
+          "target": "program_section",
+          "description": "Program section still visible with previous state preserved"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["tab_navigation", "program_section", "message_feed", "queue_list"],
+        "tab_switching_instant": true,
+        "active_tab_visually_indicated": true,
+        "content_matches_active_tab": true,
+        "tab_state_preserved": true,
+        "no_layout_shift": true,
+        "accessibility": {
+          "tab_roles_correct": true,
+          "tabpanel_roles_correct": true,
+          "keyboard_tab_navigation": true,
+          "aria_selected_attribute": true
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Responsive Layout - Mobile to Desktop",
+      "category": "normal",
+      "description": "UI adapts gracefully from mobile (375px) to desktop (1920px) viewports; spacing, text, buttons remain readable and touch-friendly",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "LOW",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN",
+            "options": [
+              { "id": "opt_1", "label": "Blue Aurora", "votes": 45 },
+              { "id": "opt_2", "label": "Green Aurora", "votes": 38 }
+            ]
+          }
+        ],
+        "messages": [],
+        "queue_status": "EMPTY"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "set_viewport",
+          "width": 375,
+          "height": 667,
+          "description": "Set mobile viewport (iPhone SE)"
+        },
+        {
+          "step": 2,
+          "action": "observe",
+          "target": "page",
+          "description": "Page renders correctly on mobile"
+        },
+        {
+          "step": 3,
+          "action": "observe",
+          "target": "buttons",
+          "description": "Buttons have sufficient touch target size (min 44x44px)"
+        },
+        {
+          "step": 4,
+          "action": "observe",
+          "target": "text",
+          "description": "Text is readable without horizontal scrolling"
+        },
+        {
+          "step": 5,
+          "action": "click",
+          "target": "vote_button",
+          "description": "Vote button is clickable on mobile"
+        },
+        {
+          "step": 6,
+          "action": "set_viewport",
+          "width": 768,
+          "height": 1024,
+          "description": "Set tablet viewport (iPad)"
+        },
+        {
+          "step": 7,
+          "action": "observe",
+          "target": "layout",
+          "description": "Layout adapts to tablet width with better spacing"
+        },
+        {
+          "step": 8,
+          "action": "set_viewport",
+          "width": 1920,
+          "height": 1080,
+          "description": "Set desktop viewport"
+        },
+        {
+          "step": 9,
+          "action": "observe",
+          "target": "layout",
+          "description": "Desktop layout uses whitespace and multi-column layout appropriately"
+        }
+      ],
+      "expected_outcomes": {
+        "mobile_renders_correctly": true,
+        "button_touch_targets_adequate": true,
+        "no_horizontal_scroll": true,
+        "text_readable_all_sizes": true,
+        "tablet_spacing_improved": true,
+        "desktop_multi_column": true,
+        "images_scale_appropriately": true,
+        "accessibility": {
+          "focus_targets_sized_correctly": true,
+          "text_zoom_to_200_percent": true
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Accessibility - Keyboard Navigation & Screen Reader",
+      "category": "accessibility",
+      "description": "User navigates entire panel using keyboard only (Tab, Enter, Arrow keys); all interactive elements focusable and announced by screen reader",
+      "mock_state": {
+        "installation_state": "NORMAL",
+        "crowdedness": "LOW",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [
+          {
+            "id": "prog_001",
+            "name": "Northern Lights Theme",
+            "available_now": true,
+            "status": "OPEN",
+            "options": [
+              { "id": "opt_1", "label": "Blue Aurora", "votes": 45 },
+              { "id": "opt_2", "label": "Green Aurora", "votes": 38 }
+            ]
+          }
+        ],
+        "messages": [
+          { "id": "msg_1", "author": "User_A", "text": "Cool!", "timestamp": "2025-11-17T15:30:00Z" }
+        ],
+        "queue_status": "EMPTY"
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "focus_order",
+          "description": "Verify logical focus order from top to bottom"
+        },
+        {
+          "step": 2,
+          "action": "press_key",
+          "key": "Tab",
+          "description": "Tab through status area"
+        },
+        {
+          "step": 3,
+          "action": "press_key",
+          "key": "Tab",
+          "description": "Tab to first tab control"
+        },
+        {
+          "step": 4,
+          "action": "press_key",
+          "key": "ArrowRight",
+          "description": "Navigate to next tab"
+        },
+        {
+          "step": 5,
+          "action": "observe",
+          "target": "tab_announcement",
+          "description": "Screen reader announces active tab and content"
+        },
+        {
+          "step": 6,
+          "action": "press_key",
+          "key": "Tab",
+          "description": "Tab to first interactive control in tab panel"
+        },
+        {
+          "step": 7,
+          "action": "press_key",
+          "key": "Enter",
+          "description": "Press Enter on vote button"
+        },
+        {
+          "step": 8,
+          "action": "observe",
+          "target": "success_announcement",
+          "description": "Screen reader announces vote success"
+        }
+      ],
+      "expected_outcomes": {
+        "logical_focus_order": true,
+        "focus_visible_all_elements": true,
+        "keyboard_operable": true,
+        "tab_navigation_works": true,
+        "arrow_keys_in_radio_group": true,
+        "enter_key_activates_buttons": true,
+        "screen_reader_announcements": true,
+        "aria_labels_present": true,
+        "color_not_only_indicator": true,
+        "accessibility": {
+          "wcag_2a_conformance": true,
+          "focus_outline_visible": true,
+          "contrast_sufficient": true,
+          "alt_text_for_icons": true
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Maintenance State - No Interactions",
+      "category": "edge",
+      "description": "Installation in MAINTENANCE state; all interactive features disabled with maintenance banner; user cannot access any program or messaging features",
+      "mock_state": {
+        "installation_state": "MAINTENANCE",
+        "crowdedness": "UNKNOWN",
+        "queue_length": 0,
+        "network_latency": 50,
+        "network_failure_rate": 0,
+        "programs": [],
+        "messages": [],
+        "queue_status": "CLOSED",
+        "maintenance_message": "System is undergoing scheduled maintenance. Expected completion: 18:00 UTC.",
+        "maintenance_estimated_duration_minutes": 45
+      },
+      "interactions": [
+        {
+          "step": 1,
+          "action": "observe",
+          "target": "maintenance_banner",
+          "description": "Large maintenance banner visible at top"
+        },
+        {
+          "step": 2,
+          "action": "observe",
+          "target": "maintenance_message",
+          "description": "Clear message about estimated completion time"
+        },
+        {
+          "step": 3,
+          "action": "observe",
+          "target": "page_content",
+          "description": "Page content is empty or heavily obscured"
+        },
+        {
+          "step": 4,
+          "action": "try_click",
+          "target": "any_button",
+          "description": "Attempt to click any interactive element (should be disabled or unavailable)"
+        }
+      ],
+      "expected_outcomes": {
+        "visible_components": ["maintenance_banner", "maintenance_message", "estimated_completion"],
+        "all_interactive_disabled": true,
+        "banner_prominent": true,
+        "estimated_time_visible": true,
+        "no_program_section": true,
+        "visual_distinction": "page dimmed or grayed, banner highlighted",
+        "accessibility": {
+          "banner_announced": true,
+          "maintenance_info_readable": true
+        }
+      }
+    }
+  ]
+}
